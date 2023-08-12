@@ -1,0 +1,25 @@
+<header class="header-text"> Welcome to Awesome Elixir! A curated list of amazingly awesome Elixir libraries, resources, and shiny things inspired by awesome-php.
+</header>
+
+<div class="container">
+  <%= for {catalog, _} <- Enum.sort_by(Enum.group_by(@libs, &(&1.catalog)), fn {catalog, _} -> catalog end) do %>
+    <h1 class="title"><%= "<a href=#"<> Preludes.to_slug(catalog) <> ">" <>  catalog <> "</a>"|>raw %> </h1>
+  <% end %>
+
+<%= for {catalog, grouped_records} <- Enum.sort_by(Enum.group_by(@libs, &(&1.catalog)), fn {catalog, _} -> catalog end) do %>
+  <h1 class="title" id= {Preludes.to_slug(catalog)}> <%= catalog  %> </h1>
+  <div class="content"><em><%= raw(Earmark.as_html!(hd(grouped_records).catalog_descr)) %></em>  </div>  
+ <%= for record <- Enum.sort_by(grouped_records, &{&1.catalog, &1.lib}) do %>
+    <li>
+      <%= Phoenix.HTML.Link.link(record.lib, to: URI.parse(record.lib_url)) %>&nbsp;
+       &#127775; <%= record.stars %>&nbsp; ⏳<%= Preludes.days_until_now(record.time_commit) %>&nbsp;
+      <%= raw(Earmark.as_html!(record.lib_descr,escape: false, inner_html: true)) %>
+    </li> 
+  <% end %>
+<% end %>
+</div>
+
+
+
+
+

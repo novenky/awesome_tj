@@ -1,0 +1,39 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* This file is for your main application CSS */
+.container {
+    margin-top: 10px; /* Adjust the margin as needed */
+  }
+  
+  .title {
+    margin-bottom: 10px; /* Adjust the margin as needed */
+    margin-top: 10px; /* Adjust the margin as needed */  
+    font-size: 1.2em; /* Default font size for titles */  
+}
+  
+.content {
+    margin-bottom: 10px; /* Adjust the margin as needed */
+    margin-top: 10px; /* Adjust the margin as needed */  
+    /* font-size: 1.2em; Default font size for titles   */
+}
+a {
+  color: #2980B9;
+}
+
+a:hover {
+  color: #E74C3C; /* Цвет ссылки при наведении */
+}
+
+
+.header-text {
+  font-size: 24px; /* Adjust the font size as needed */
+  font-weight: normal; /* Make the text bold */
+  font-style: italic;
+  /* color: #666; Set the text color */
+  color: #9A72AC;
+  text-align: center; /* Center the text horizontally */
+  /* padding: 20px 0; Add padding top and bottom for spacing */
+  /* You can add more styles here for additional customization */
+}

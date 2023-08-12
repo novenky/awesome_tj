@@ -1,0 +1,11 @@
+{application,gen_worker,
+             [{optional_applications,[]},
+              {applications,[kernel,stdlib,elixir,logger,timex]},
+              {description,"Worker behavior that helps to run task at a specific time with a specified frequency."},
+              {modules,['Elixir.GenWorker','Elixir.GenWorker.App',
+                        'Elixir.GenWorker.Callback',
+                        'Elixir.GenWorker.Configuration',
+                        'Elixir.GenWorker.Error','Elixir.GenWorker.Server',
+                        'Elixir.GenWorker.State','Elixir.GenWorker.Worker']},
+              {registered,[]},
+              {vsn,"0.0.9"}]}.

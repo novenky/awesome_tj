@@ -1,0 +1,12 @@
+defmodule RequestsTest do
+  use ExUnit.Case, async: true
+
+  # test "tuple_to_map conversion" do
+  #   input = {:a, :b, :c}
+  #   expected_output = %{:a => :b, :b => :c}
+
+  #   output = Requests.tuple_to_map(input)
+
+  #   assert output == expected_output
+  # end
+end
