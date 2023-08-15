@@ -1,5 +1,5 @@
 defmodule Requests do
-@sleep 1*61*1000
+@sleep 1*1000*61
 
   # Function to convert a tuple to a map
 

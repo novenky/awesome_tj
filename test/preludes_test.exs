@@ -2,21 +2,17 @@ defmodule PreludesTest do
 use ExUnit.Case, async: true
 import Preludes
 
-  test "count tuples in list" do
-    list = [{1, 2}, {3, 4}, 5]
-    assert number_of_libs(list) == 2
+  test "parsing a valid GitHub URL" do
+    url = "https://github.com/owner/repo"
+    expected = {"owner", "repo"}
+    assert parse_github_url(url) == expected
   end
 
-  test "count tuples in empty list" do
-    list = []
-    assert number_of_libs(list) == 0
+  test "parsing an invalid GitHub URL" do
+    url = "https://example.com"
+    expected = {:error, "Invalid GitHub URL"}
+    assert parse_github_url(url) == expected
   end
-
-  test "count tuples in list with non-tuple elements" do
-    list = [1, 2, 3, "hello", %{key: "value"}]
-    assert number_of_libs(list) == 0
-  end
-
 
   test "parse GitHub URL" do
     url = "https://github.com/elixir-lang/elixir"
@@ -33,29 +29,19 @@ import Preludes
     assert parse_github_url(url) == {"phoenixframework", "phoenix"}
   end
 
-  test "parse non-GitHub URL" do
-    url = "https://example.com/some/repo"
-    assert parse_github_url(url) == {nil, nil}
+  test "count tuples in list" do
+    list = [%{1 => 2}, %{3 => 4}, %{5 => 6}]
+    assert number_of_libs(list) == 3
   end
 
-  test "extract owner and repo from valid GitHub URL" do
-    url = "https://github.com/elixir-lang/elixir"
-    assert extract_owner_and_repo(url) == {"elixir-lang", "elixir"}
+  test "count tuples in empty list" do
+    list = []
+    assert number_of_libs(list) == 0
   end
 
-  test "extract owner and repo from valid GitHub URL with HTTP" do
-    url = "http://github.com/phoenixframework/phoenix"
-    assert extract_owner_and_repo(url) == {"phoenixframework", "phoenix"}
-  end
-
-  test "extract owner and repo from valid GitHub URL with mixed case" do
-    url = "https://github.com/Elixir-lang/Elixir"
-    assert extract_owner_and_repo(url) == {"elixir-lang", "elixir"}
-  end
-
-  test "invalid GitHub URL" do
-    url = "https://example.com/some/repo"
-    assert extract_owner_and_repo(url) == {:error, "Invalid GitHub URL"}
+  test "count tuples in list with non-tuple elements" do
+    list = [1, 2, 3, "hello", %{key: "value"}]
+    assert number_of_libs(list) == 1
   end
 
  test "transforms a list" do

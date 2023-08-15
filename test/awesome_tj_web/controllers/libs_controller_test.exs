@@ -9,7 +9,7 @@ defmodule AwesomeTjWeb.LibsControllerTest do
   describe "index" do
     test "lists all libs", %{conn: conn} do
       conn = get(conn, ~p"/")
-      assert html_response(conn, 200) =~ "Listing Libs"
+      assert html_response(conn, 200) =~ "Welcome to Awesome Elixir! A curated list of amazingly awesome Elixir libraries, resources, and shiny things inspired by awesome-php."
     end
   end
 

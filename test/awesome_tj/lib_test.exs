@@ -75,7 +75,7 @@ defmodule PreludesTest do
   use ExUnit.Case
 
   test "counts the number of tuples in the list" do
-    list_of_tuples = [{1, 2}, {:a, :b}, {3, 4}]
+    list_of_tuples = [%{1=> 2}, %{:a=> :b}, %{3=> 4}]
     assert Preludes.number_of_libs(list_of_tuples) == 3
   end
 

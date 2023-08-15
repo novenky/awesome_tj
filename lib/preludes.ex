@@ -1,19 +1,15 @@
 defmodule Preludes do
   alias Tentacat.{Client, Repositories}
   alias AwesomeTj.Lib
+  @moduledoc false
 
   # В этом модуле мы читаем rawreadme.md и парсим его последовательно
-  # Preludes.getrawurls             |>
-  # Preludes.tfm_two                |>
-  # Preludes.tfm_three              |>
-  # Preludes.parse_entries()
   # В итоге получает List of maps готовый к записи в базу данных
 
   @doc """
   Converts a string to a slug by replacing spaces with hyphens and
   removing non-alphanumeric characters.
   """
-
   @spec to_slug(String.t()) :: String.t()
   def to_slug(str) do
     str
@@ -27,15 +23,30 @@ defmodule Preludes do
     Enum.count(list_of_maps, fn map -> is_map(map) end)
   end
 
-  @spec parse_github_url(binary()) :: {String.t(), String.t()}
+  # @spec parse_github_url(binary()) :: {String.t(), String.t()}
+  # def parse_github_url(url) when is_binary(url) do
+  #   {owner, repo} = extract_owner_and_repo(url)
+  #   {String.downcase(owner), String.downcase(repo)}
+  # end
+
+  # def extract_owner_and_repo(url) do
+  #   case Regex.run(~r{https?://github.com/([^/]+)/([^/]+)}, url) do
+  #     [_, owner, repo] -> {owner, repo}
+  #     _ -> {:error, "Invalid GitHub URL"}
+  #   end
+  # end
+
+  @spec parse_github_url(binary()) :: {String.t(), String.t()} | {:error, String.t()}
   def parse_github_url(url) when is_binary(url) do
-    {owner, repo} = extract_owner_and_repo(url)
-    {String.downcase(owner), String.downcase(repo)}
+    case extract_owner_and_repo(url) do
+      {:ok, {owner, repo}} -> {String.downcase(owner), String.downcase(repo)}
+      {:error, reason} -> {:error, reason}
+    end
   end
 
-  def extract_owner_and_repo(url) do
+  defp extract_owner_and_repo(url) do
     case Regex.run(~r{https?://github.com/([^/]+)/([^/]+)}, url) do
-      [_, owner, repo] -> {owner, repo}
+      [_, owner, repo] -> {:ok, {owner, repo}}
       _ -> {:error, "Invalid GitHub URL"}
     end
   end
@@ -44,9 +55,9 @@ defmodule Preludes do
   def get_api_data({owner, repo}) do
     client =
       Client.new(
-    #    %{
-    #    access_token: System.get_env("TOKEN")
-    #  }
+       %{
+       access_token: System.get_env("TOKEN")
+     }
       )
 
     case Repositories.repo_get(client, owner, repo) do
@@ -58,10 +69,7 @@ defmodule Preludes do
 
   def getrawurls() do
      {:ok, %HTTPoison.Response{status_code: 200, body: bodyraw1}} = HTTPoison.get("https://raw.githubusercontent.com/h4cc/awesome-elixir/master/README.md")
-
-    # bodyraw1 = File.read!("/home/slava/Code/elixir_Phoenix/awesome_tj/rawREADME_1c.md")
     # bodyraw1 = File.read!("/home/slava/Code/elixir_Phoenix/awesome_tj/rawREADME999.md")
-    # bodyraw1 = File.read!("/home/slava/Code/elixir_Phoenix/awesome_tj/rawREADME777.md")
     [bodyraw, _] = String.split(bodyraw1, "# Resources")
     zzz = Regex.scan(~r/##.*\n|\*.*\n/, bodyraw)
     for [x] <- zzz, do: String.replace(x, "\n", "")
@@ -74,6 +82,7 @@ defmodule Preludes do
 
   def tfm_two([]), do: [nil]
 
+  @spec tfm_two([String.t()]) :: [String.t()]
   def tfm_two([head | tail]) do
     tail
     |> Enum.take_while(&(not Regex.match?(~r/##.*/, &1)))
@@ -93,7 +102,6 @@ defmodule Preludes do
     Enum.map(entries, &parse_entry/1)
   end
 
-  @spec parse_entry({String.t(), String.t(), String.t()}) :: %{atom() => any}
   defp parse_entry({catalog_line, descr_line, lib_line}) do
     catalog = String.replace_prefix(catalog_line, "## ", "")
     catalog_descr = String.trim(descr_line, "*")
@@ -108,6 +116,7 @@ defmodule Preludes do
     }
   end
 
+  @spec parse_lib_line(String.t()) :: {String.t(), String.t(), String.t()}
   defp parse_lib_line(lib_line) do
     [_, lib, lib_url, lib_descr] =
       Regex.scan(~r/\[([^\]]+)\]\(([^)]+)\) - (.+)/, lib_line) |> hd()
@@ -115,11 +124,11 @@ defmodule Preludes do
     {lib, lib_url, lib_descr}
   end
 
+  @spec tuple_to_map(map()) :: map()
   def tuple_to_map(e) do
     data =
       if String.contains?(e.lib_url, "github.com") do
         Preludes.get_api_data(Preludes.parse_github_url(e.lib_url))
-        #       :timer.sleep(2000)
       else
         nil
       end
@@ -180,12 +189,5 @@ defmodule Preludes do
     list_of_maps
     |> Enum.map(fn x -> Lib.upsert_libs(x) end)
   end
-
-  # def main() do
-  #   getrawurls()
-  #   |> pre_prequel()
-  #   |> prequel()
-  #   |> write_to_base()
-  # end
 
 end

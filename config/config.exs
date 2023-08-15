@@ -65,13 +65,6 @@ import_config "#{config_env()}.exs"
 
 config :awesome_tj, Scheduler,
   jobs: [
-    # Every minute
-    # {"*/7 * * * *",   fn -> Scheduler.hello() end}
-    # {"*/5 * * * *",   fn -> Preludes.main() end}
-    # Every 15 minutes
-    # {"*/15 * * * *",   fn -> System.cmd("rm", ["/tmp/tmp_"]) end},
-    # Runs on 18, 20, 22, 0, 2, 4, 6:
-    # {"0 18-6/2 * * *", fn -> :mnesia.backup('/var/backup/mnesia') end},
-    # Runs every midnight:
-    # {"@daily",         {Backup, :backup, []}}
+    # {"*/1 * * * *",   fn -> Main.main() end}
+    {"0 0 * * *", fn -> Main.main() end}
     ]

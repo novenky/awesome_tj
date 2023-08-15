@@ -14,11 +14,7 @@ defmodule AwesomeTjWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", AwesomeTjWeb do
-    pipe_through :browser
-    get "/", LibsController, :index
-   resources "/libs", LibsController
-  end
+
 
   # Other scopes may use custom stacks.
   # scope "/api", AwesomeTjWeb do
@@ -36,9 +32,17 @@ defmodule AwesomeTjWeb.Router do
 
     scope "/dev" do
       pipe_through :browser
-
       live_dashboard "/dashboard", metrics: AwesomeTjWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end
+
+  scope "/", AwesomeTjWeb do
+    pipe_through :browser
+    get "/", LibsController, :index
+    get "/:var/*_", LibsController, :index
+  end
+
+
+
 end
