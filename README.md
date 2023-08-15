@@ -1,24 +1,19 @@
 # Awesome Elixir for FunBox
 
-# Awesome Phoenix Project
-
 Welcome to Awesome Phoenix Project! This project is a [Phoenix Framework](https://www.phoenixframework.org/) application that uses SQLite3 as the backend database.
 
 ## Getting Started
 
 Follow these instructions to get the project up and running on your local machine.
 
-Using an Existing Database File (No Migration Needed)
-Locate the pre-populated SQLite3 database file in the project directory.
-
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
   * If you decide to use the already populated database file from the repository, then there is no need to run the `mix ecto.setup` command as the database is already set up.Update the database configuration in config/dev.exs (and config/test.exs if needed) to point to the existing database file. Example:
   
-  config :my_app, MyApp.Repo,
+  ```config :my_app, MyApp.Repo,
   adapter: Ecto.Adapters.SQL.SQLite,
-  database: "path/to/your/database.sqlite3"
+  database: "path/to/your/database.sqlite3"```
 
    This is the recommended method due to the 60 request limit. Otherwise, run the `mix ecto.setup`.
   * Start Phoenix endpoint with `mix phx.server`
