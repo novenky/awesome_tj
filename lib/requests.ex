@@ -1,11 +1,11 @@
 defmodule Requests do
-@sleep 1*1000*61
+  @sleep 1 * 1000 * 61
 
   # Function to convert a tuple to a map
 
   def tuple_to_map(a) do
     Preludes.tuple_to_map(a)
-    #{a, b, c}
+    # {a, b, c}
   end
 
   # Function to process the list of tuples into a list of maps
@@ -18,15 +18,17 @@ defmodule Requests do
   defp process_tuple(tuple) do
     result = tuple_to_map(tuple)
     Counter.decrement()
-    case Counter.get_state() > 0 do
-        true ->
-                 :timer.sleep(@sleep) # Rate limiting: Sleep for 61 second before processing the next tuple
-                 IO.puts(Counter.get_state())
-                 result |> AwesomeTj.Lib.upsert_libs
-        _ ->
-                  Counter.stop()
-#                  Main.main()
 
-                 end
+    case Counter.get_state() > 0 do
+      true ->
+        # Rate limiting: Sleep for 61 second before processing the next tuple
+        :timer.sleep(@sleep)
+        IO.puts(Counter.get_state())
+        result |> AwesomeTj.Lib.upsert_libs()
+
+      _ ->
+        Counter.stop()
+        #                  Main.main()
     end
   end
+end
