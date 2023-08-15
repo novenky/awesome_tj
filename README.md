@@ -12,15 +12,13 @@ To start your Phoenix server:
   * If you decide to use the already populated database file from the repository, then there is no need to run the `mix ecto.setup` command as the database is already set up.Update the database configuration in config/dev.exs (and config/test.exs if needed) to point to the existing database file. Example:
   
   ```elixir
-  config :my_app, MyApp.Repo,
-  adapter: Ecto.Adapters.SQL.SQLite,
-  database: "path/to/your/database.sqlite3"
+  config :awesome_tj, AwesomeTj.Repo,
+  database: Path.expand("../awesome_tj_dev.db", Path.dirname(__ENV__.file)),
   ```
-
    This is the recommended method due to the 60 request limit. Otherwise, run the `mix ecto.setup`.
   * Start Phoenix endpoint with `mix phx.server`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+Now you can visit [`localhost:4000`](http://localhost:4000) or see which libraries have more than 3000 stars like this [`min_stars=3000`](http://localhost:4000/?min_stars=3000) from your browser.
   
 * Awesome repositories requests starts at minight (UTC) and might take up to a day for it to fully complete.
 * In order to kick off that process prior to midnight use IEx as: `Main.main`
